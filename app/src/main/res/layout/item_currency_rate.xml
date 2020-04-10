@@ -1,0 +1,81 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rateContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/infoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp">
+
+        <RelativeLayout
+            android:id="@+id/playerInfo"
+            android:layout_width="match_parent"
+            android:layout_height="58dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/currencyImage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:visibility="visible"
+                app:riv_oval="true"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_toRightOf="@+id/currencyImage"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/currencyInitials"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:text="Username"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/currencyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Name"
+                    android:textColor="@color/colorMiddle" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/currencyRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="60dp"
+                android:textSize="18sp"
+                android:gravity="right"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="0.0"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
