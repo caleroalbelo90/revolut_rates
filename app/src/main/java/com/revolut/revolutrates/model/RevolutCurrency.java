@@ -8,15 +8,15 @@ public class RevolutCurrency {
     private String baseCurrency;
 
     @SerializedName("rates")
-    Rates rates;
+    RevolutRates revolutRates;
 
     // Getter Methods
     public String getBaseCurrency() {
         return baseCurrency;
     }
 
-    public Rates getRates() {
-        return rates;
+    public RevolutRates getRevolutRates() {
+        return revolutRates;
     }
 
     // Setter Methods
@@ -24,8 +24,8 @@ public class RevolutCurrency {
         this.baseCurrency = baseCurrency;
     }
 
-    public void setRates(Rates ratesObject) {
-        this.rates = ratesObject;
+    public void setRevolutRates(RevolutRates revolutRatesObject) {
+        this.revolutRates = revolutRatesObject;
     }
 
 }

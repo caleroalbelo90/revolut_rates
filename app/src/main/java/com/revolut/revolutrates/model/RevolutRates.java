@@ -2,7 +2,7 @@ package com.revolut.revolutrates.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Rates {
+public class RevolutRates {
 
     @SerializedName("AUD")
     private float AUD;

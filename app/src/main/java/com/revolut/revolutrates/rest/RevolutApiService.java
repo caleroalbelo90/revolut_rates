@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 
 public interface RevolutApiService {
 
-  @GET("android/latest")
-  Call<RevolutCurrency> getAllRates(@Query("base") String base);
+    @GET("android/latest")
+    Call<RevolutCurrency> getAllRates(@Query("base") String base);
 
 }

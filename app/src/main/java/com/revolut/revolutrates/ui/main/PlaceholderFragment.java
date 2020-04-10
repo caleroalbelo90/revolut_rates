@@ -1,7 +1,6 @@
 package com.revolut.revolutrates.ui.main;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.OverScroller;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,9 +22,8 @@ import com.revolut.revolutrates.R;
 import com.revolut.revolutrates.model.RevolutCurrencyItem;
 import com.revolut.revolutrates.ui.main.adapter.CurrencyViewAdapter;
 
-import java.lang.reflect.Field;
 import java.util.LinkedList;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Objects;
 
 public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter.ItemClickListener {
 
@@ -34,62 +31,22 @@ public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter
 
     private PageViewModel pageViewModel;
 
-    LayoutInflater inflater;
+    private RecyclerView currencyRateList;
 
-    RecyclerView currencyRateList;
+    private ImageView baseCurrencyImage;
 
-    ImageView baseCurrencyImage;
+    private CurrencyViewAdapter adapter;
 
-    CurrencyViewAdapter adapter;
+    private TextView baseCurrencyInitials;
+    private TextView baseCurrencyName;
 
-    TextView baseCurrencyInitials;
-    TextView baseCurrencyName;
+    private View baseInfoContainer;
 
-    EditText baseCurrencyRate;
+    private boolean isAnimating = false;
 
-    View baseInfoContainer;
+    private RevolutCurrencyItem lastRevolutCurrencyItem;
 
-    boolean isAnimating = false;
-
-    RevolutCurrencyItem lastRevolutCurrencyItem;
-
-    private RecyclerView.ItemAnimator.ItemAnimatorFinishedListener animationFinishedListener =
-            new RecyclerView.ItemAnimator.ItemAnimatorFinishedListener() {
-                @Override
-                public void onAnimationsFinished() {
-                    // The current animation have finished and there is currently no animation running,
-                    // but there might still be more items that will be animated after this method returns.
-                    // Post a message to the message queue for checking if there are any more
-                    // animations running.
-                    new Handler().post(waitForAnimationsToFinishRunnable);
-                }
-            };
-
-    private Runnable waitForAnimationsToFinishRunnable = new Runnable() {
-        @Override
-        public void run() {
-            waitForAnimationsToFinish();
-        }
-    };
-
-    private void waitForAnimationsToFinish() {
-        if (currencyRateList.isAnimating()) {
-            // The recycler view is still animating, try again when the animation has finished.
-            currencyRateList.getItemAnimator().isRunning(animationFinishedListener);
-            return;
-        }
-
-        // The recycler view have animated all it's views
-        onRecyclerViewAnimationsFinished();
-    }
-
-    private void onRecyclerViewAnimationsFinished() {
-        currencyRateList.smoothScrollToPosition(0);
-        isAnimating = false;
-        pageViewModel.start();
-    }
-
-    public static PlaceholderFragment newInstance(int index) {
+    static PlaceholderFragment newInstance(int index) {
         PlaceholderFragment fragment = new PlaceholderFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_SECTION_NUMBER, index);
@@ -118,8 +75,6 @@ public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter
 
         View root = inflater.inflate(R.layout.fragment_main, container, false);
 
-        this.inflater = inflater;
-
         pageViewModel.getCurrencyMutableLiveData().observe(getViewLifecycleOwner(), revolutCurrencyItemListPair -> {
             if (isAnimating) return;
 
@@ -137,7 +92,7 @@ public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter
         baseCurrencyImage = root.findViewById(R.id.baseCurrencyImage);
         baseCurrencyInitials = root.findViewById(R.id.baseCurrencyInitials);
         baseCurrencyName = root.findViewById(R.id.baseCurrencyName);
-        baseCurrencyRate = root.findViewById(R.id.baseCurrencyRate);
+        EditText baseCurrencyRate = root.findViewById(R.id.baseCurrencyRate);
         baseInfoContainer = root.findViewById(R.id.baseInfoContainer);
 
         currencyRateList = root.findViewById(R.id.currencyRateList);
@@ -149,7 +104,7 @@ public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter
 
         currencyRateList.setAdapter(adapter);
 
-        currencyRateList.getItemAnimator().setMoveDuration(1000);
+        Objects.requireNonNull(currencyRateList.getItemAnimator()).setMoveDuration(1000);
 
         baseCurrencyRate.addTextChangedListener(new TextWatcher() {
             @Override
@@ -201,7 +156,7 @@ public class PlaceholderFragment extends Fragment implements CurrencyViewAdapter
         }, delayInMillis);
     }
 
-    public void populateBase(RevolutCurrencyItem revolutCurrencyItem) {
+    private void populateBase(RevolutCurrencyItem revolutCurrencyItem) {
 
         if (revolutCurrencyItem == null) return;
 

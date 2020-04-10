@@ -1,5 +1,7 @@
 package com.revolut.revolutrates.controller;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.revolut.revolutrates.model.RevolutCurrency;
@@ -18,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Controller implements Callback<RevolutCurrency> {
 
     private LoadRatesCallback callback;
-    static final String BASE_URL = "https://hiring.revolut.codes/api/";
+    private static final String BASE_URL = "https://hiring.revolut.codes/api/";
 
     private final List<Call> apiCalls = Collections.synchronizedList(new LinkedList<Call>());
 
@@ -45,8 +47,8 @@ public class Controller implements Callback<RevolutCurrency> {
     }
 
     @Override
-    public void onResponse(Call<RevolutCurrency> call, Response<RevolutCurrency> response) {
-        if(response.isSuccessful()) {
+    public void onResponse(@NonNull Call<RevolutCurrency> call, Response<RevolutCurrency> response) {
+        if (response.isSuccessful()) {
 
             RevolutCurrency revolutCurrency = response.body();
             callback.onRatesLoaded(revolutCurrency);
@@ -58,7 +60,7 @@ public class Controller implements Callback<RevolutCurrency> {
     }
 
     @Override
-    public void onFailure(Call<RevolutCurrency> call, Throwable t) {
+    public void onFailure(@NonNull Call<RevolutCurrency> call, Throwable t) {
         t.printStackTrace();
     }
 
@@ -74,6 +76,7 @@ public class Controller implements Callback<RevolutCurrency> {
 
     public interface LoadRatesCallback {
         void onRatesLoaded(RevolutCurrency revolutCurrency);
+
         void onRatesFailToLoad();
     }
 

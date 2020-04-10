@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blongho.country_data.World;
@@ -50,8 +51,9 @@ public class CurrencyViewAdapter extends RecyclerView.Adapter<CurrencyViewAdapte
     }
 
     // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.item_currency_rate, parent, false);
         return new ViewHolder(view);
     }
@@ -114,11 +116,6 @@ public class CurrencyViewAdapter extends RecyclerView.Adapter<CurrencyViewAdapte
                 notifyItemMoved(getAdapterPosition(), 0);
             }
         }
-    }
-
-    // convenience method for getting data at click position
-    RevolutCurrencyItem getItem(int id) {
-        return mData.get(id);
     }
 
     // allows clicks events to be caught
